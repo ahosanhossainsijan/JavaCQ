@@ -3,6 +3,7 @@ pipeline {
 
     tools {
         maven 'maven'
+        allure 'allure'
     }
 
     stages {
@@ -37,5 +38,12 @@ pipeline {
                 }
             }
         }
+
+         stage('Generate Allure Report') {
+              steps {
+                 allure includeProperties: false, jdk: 'java', results: [[path: 'allure-results']]
+              }
+         }
+
     }
 }
