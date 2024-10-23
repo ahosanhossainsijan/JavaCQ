@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven'
-        allure 'allure'
+        maven 'MavenLocal'
+        allure 'ALLURE_HOME'
     }
 
     stages {
@@ -41,7 +41,7 @@ pipeline {
 
          stage('Generate Allure Report') {
               steps {
-                 allure includeProperties: false, jdk: 'java', results: [[path: 'allure-results']]
+                 allure includeProperties: false, jdk: 'JAVA_HOME', results: [[path: 'allure-results']]
               }
          }
 
