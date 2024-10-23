@@ -21,7 +21,7 @@ public class FileUploaderPage extends BasePage {
     By uploadButton = By.xpath("//form//input[@id='file-submit']");
 
     public void uploadFile(String fileName) {
-        String fullPath = Paths.get(JsonUtil.getConfigData("path"), fileName).toAbsolutePath().toString();
+        String fullPath = Paths.get("src/Files/", fileName).toAbsolutePath().toString();
         driver.findElement(fileInput).sendKeys(fullPath);
     }
 

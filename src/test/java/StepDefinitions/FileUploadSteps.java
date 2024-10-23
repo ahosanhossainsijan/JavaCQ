@@ -31,17 +31,17 @@ public class FileUploadSteps {
 
     @When("I upload the file {string}")
     public void UploadTheFile(String filename) {
-        //fileUploaderPage.uploadFile(filename);
+        fileUploaderPage.uploadFile(filename);
     }
 
     @When("I click on the Upload button")
     public void ClickOnTheUploadButton() {
-        //fileUploaderPage.clickOnUpload();
+        fileUploaderPage.clickOnUpload();
     }
 
     @Then("The file should be uploaded successfully")
     public void FileIsUploaded() {
-        //fileUploadedPage = new FileUploadedPage(driver);
-        //Assert.assertTrue(fileUploadedPage.IsPageOpned(), "File is not uploaded");
+        fileUploadedPage = new FileUploadedPage(driver);
+        Assert.assertTrue(fileUploadedPage.IsPageOpned(), "File is not uploaded");
     }
 }
