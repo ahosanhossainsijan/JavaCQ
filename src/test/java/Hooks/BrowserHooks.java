@@ -32,7 +32,9 @@ public class BrowserHooks {
     public static WebDriver getDriver() {
         if(driver == null){
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("incognito");
+            options.addArguments("--incognito");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--headless");
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
         }
