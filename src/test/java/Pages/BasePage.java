@@ -25,7 +25,7 @@ public class BasePage
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
         }
-        driver.get(JsonUtil.getConfigData("url"));
+        driver.get("https://the-internet.herokuapp.com/upload");
     }
 
     public boolean IsPageOpned()
