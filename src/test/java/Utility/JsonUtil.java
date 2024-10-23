@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 public class JsonUtil {
 
     public static String getConfigData(String key) {
-        String jsonFilePath = ".//src//Data//config.json";
+        String jsonFilePath = "./src/Data/config.json";
         try {
             String jsonData = new String(Files.readAllBytes(Paths.get(jsonFilePath)));
             JSONObject testData = new JSONObject(jsonData);

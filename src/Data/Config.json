@@ -1,4 +1,4 @@
 {
   "url": "https://the-internet.herokuapp.com/upload",
-  "path": ".//src//Files"
+  "path": "./src/Files"
 }
