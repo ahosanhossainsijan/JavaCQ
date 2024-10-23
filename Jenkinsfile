@@ -7,43 +7,29 @@ pipeline {
     }
 
     stages {
-        stage('Clean') {
+        stage('Checkout') {
             steps {
-                script {
-                    sh 'mvn clean install'
-                }
+                checkout scm
             }
         }
 
-        stage('Compile') {
+        stage('Build') {
             steps {
-                script {
-                    sh 'mvn compile'
-                }
+                sh 'mvn clean install'
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
 
         stage('Test') {
             steps {
-                script {
-                    sh 'mvn test'
-                }
+                sh 'mvn test'
             }
         }
 
-        stage('Package') {
+        stage('Generate Allure Report') {
             steps {
-                script {
-                    sh 'mvn package'
-                }
+                allure includeProperties: false, jdk: 'java', results: [[path: 'allure-results']]
             }
         }
-
-         stage('Generate Allure Report') {
-              steps {
-                 allure includeProperties: false, jdk: 'java', results: [[path: 'allure-results']]
-              }
-         }
-
     }
 }
