@@ -33,7 +33,6 @@ public class BrowserHooks {
         if(driver == null){
             ChromeOptions options = new ChromeOptions();
             options.addArguments("incognito");
-            options.addArguments("--headless");
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
         }
