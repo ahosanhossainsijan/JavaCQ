@@ -51,19 +51,21 @@ stages:
               testResultsFiles: '**/surefire-reports/TEST-*.xml'
               goals: 'test'
 
-          # Generate Allure report after tests
-          - script: |
-             
-              curl -o allure.zip -L https://github.com/allure-framework/allure2/releases/download/2.20.0/allure-2.20.0.zip
-              unzip allure.zip -d $(Build.SourcesDirectory)/allure
-              
-              $(Build.SourcesDirectory)/allure/bin/allure generate $(Build.SourcesDirectory)/target/allure-results -o $(Build.SourcesDirectory)/allure-report
+          # Download and extract Allure CLI
+          - powershell: |
+              Invoke-WebRequest -Uri https://github.com/allure-framework/allure2/releases/download/2.20.0/allure-2.20.0.zip -OutFile $(Build.SourcesDirectory)\allure.zip
+              Expand-Archive -Path $(Build.SourcesDirectory)\allure.zip -DestinationPath $(Build.SourcesDirectory)\allure
+            displayName: 'Download and Extract Allure CLI'
+
+          # Generate Allure report
+          - powershell: |
+              $(Build.SourcesDirectory)\allure\bin\allure generate $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-report
             displayName: 'Generate Allure Report'
 
           # Publish Allure report as a build artifact
           - task: PublishBuildArtifacts@1
             inputs:
-              pathToPublish: '$(Build.SourcesDirectory)/allure-report'
+              pathToPublish: '$(Build.SourcesDirectory)\allure-report'
               artifactName: 'allure-report'
 
   - stage: NotifySuccess
