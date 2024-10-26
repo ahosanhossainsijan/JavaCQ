@@ -8,7 +8,7 @@ stages:
   - stage: Build
     jobs:
       - job: BuildJob
-        pool: Default
+        pool: mypool
         steps:
           - task: Maven@3
             inputs:
@@ -36,7 +36,7 @@ stages:
   - stage: Test
     jobs:
       - job: TestJob
-        pool: Default
+        pool: mypool
         steps:
           - task: Maven@3
             inputs:
@@ -55,7 +55,7 @@ stages:
     condition: succeeded()
     jobs:
       - job: NotifyJob
-        pool: Default
+        pool: mypool
         steps:
           - script: echo Build was successful!
             displayName: 'Print success message'
