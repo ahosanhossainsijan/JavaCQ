@@ -59,7 +59,7 @@ stages:
 
           # Generate Allure report with additional options
           - powershell: |
-              $(Build.SourcesDirectory)\allure\bin\allure generate $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-report --clean --report-title "My Custom Report"
+              $(Build.SourcesDirectory)\allure\allure-2.20.0\bin\allure generate $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-report --clean --report-title "My Custom Report"
             displayName: 'Generate Allure Report with Options'
 
           # Publish Allure report as a build artifact
