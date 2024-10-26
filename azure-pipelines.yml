@@ -65,8 +65,8 @@ stages:
           # Publish Allure report as a build artifact
           - task: PublishBuildArtifacts@1
             inputs:
-              pathToPublish: '$(Build.SourcesDirectory)\allure-report'
-              artifactName: 'allure-report'
+              pathToPublish: '$(Build.SourcesDirectory)\allure-results'
+              artifactName: 'allure-results'
 
   - stage: NotifySuccess
     condition: succeeded()
