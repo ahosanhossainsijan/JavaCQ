@@ -57,16 +57,23 @@ stages:
               Expand-Archive -Path $(Build.SourcesDirectory)\allure.zip -DestinationPath $(Build.SourcesDirectory)\allure
             displayName: 'Download and Extract Allure CLI'
 
-          # Generate Allure report with additional options
+          # Generate Allure report
           - powershell: |
-              $(Build.SourcesDirectory)\allure\allure-2.20.0\bin\allure generate $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-report --clean --report-title "My Custom Report"
-            displayName: 'Generate Allure Report with Options'
+              $(Build.SourcesDirectory)\allure\allure-2.20.0\bin\allure generate $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-report
+            displayName: 'Generate Allure Report'
 
           # Publish Allure report as a build artifact
           - task: PublishBuildArtifacts@1
             inputs:
               pathToPublish: '$(Build.SourcesDirectory)\allure-results'
               artifactName: 'allure-results'
+
+          # Publish HTML report
+          - task: PublishHtmlReport@1
+            inputs:
+              reportDir: '$(Build.SourcesDirectory)\allure-results'
+              reportTitle: 'Allure Test Report'
+              reportName: 'AllureReport'
 
   - stage: NotifySuccess
     condition: succeeded()
