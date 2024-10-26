@@ -13,7 +13,7 @@ stages:
           - task: Maven@3
             inputs:
               mavenVersionOption: 'SpecificVersion'
-              mavenVersion: '3.9.9'
+              mavenVersion: '3.9.4'
               mavenPomFile: 'pom.xml'
               mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
@@ -41,7 +41,7 @@ stages:
           - task: Maven@3
             inputs:
               mavenVersionOption: 'SpecificVersion'
-              mavenVersion: '3.9.9'
+              mavenVersion: '3.9.4'
               mavenPomFile: 'pom.xml'
               mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
