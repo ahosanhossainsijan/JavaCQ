@@ -59,7 +59,7 @@ stages:
 
           # Generate Allure report
           - powershell: |
-              $(Build.SourcesDirectory)\allure\allure-2.20.0\bin\allure serve $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-report
+              $(Build.SourcesDirectory)\allure\allure-2.20.0\bin\allure serve $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-results
             displayName: 'Generate Allure Report'
 
           # Publish Allure report as a build artifact
