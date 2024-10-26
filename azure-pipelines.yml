@@ -59,7 +59,7 @@ stages:
 
           # Generate Allure report
           - powershell: |
-              $(Build.SourcesDirectory)\allure\allure-2.20.0\bin\allure generate $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-report
+              $(Build.SourcesDirectory)\allure\allure-2.20.0\bin\allure serve $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-report
             displayName: 'Generate Allure Report'
 
           # Publish Allure report as a build artifact
@@ -67,13 +67,6 @@ stages:
             inputs:
               pathToPublish: '$(Build.SourcesDirectory)\allure-results'
               artifactName: 'allure-results'
-
-          # Publish HTML report
-          - task: PublishHtmlReport@1
-            inputs:
-              reportDir: '$(Build.SourcesDirectory)\allure-results'
-              reportTitle: 'Allure Test Report'
-              reportName: 'AllureReport'
 
   - stage: NotifySuccess
     condition: succeeded()
