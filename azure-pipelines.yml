@@ -5,68 +5,38 @@ variables:
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 stages:
-  - stage: Build
+  - stage: BuildAndTest
     jobs:
-      - job: BuildJob
+      - job: BuildTestJob
         pool: mypool
         steps:
+          # Single Maven task that both builds and runs tests
           - task: Maven@3
             inputs:
-              mavenVersionOption: 'SpecificVersion'
-              mavenVersion: '3.9.4'
               mavenPomFile: 'pom.xml'
               mavenOptions: '-Xmx3072m'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: '17'
               jdkArchitectureOption: 'x64'
-              publishJUnitResults: true
-              testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              goals: 'package'
+              goals: 'verify' # 'verify' runs both package and test
 
+          # Publish test reports
+          - task: PublishAllureReport@1
+            displayName: 'Publish Report'
+            inputs:
+              allureVersion: 2.27.0
+              testResultsDir: allure-results
+
+          # Copy and publish artifacts
           - task: CopyFiles@2
             inputs:
-              contents: '**/target/*.jar'
+              contents: '*/target/.jar'
               targetFolder: '$(build.artifactStagingDirectory)'
 
           - task: PublishBuildArtifacts@1
             inputs:
-              pathToPublish: '$(Build.ArtifactStagingDirectory)'
+              pathToPublish: '$(build.artifactStagingDirectory)'
               artifactName: 'drop'
-
-  - stage: Test
-    jobs:
-      - job: TestJob
-        pool: mypool
-        steps:
-          - task: Maven@3
-            inputs:
-              mavenVersionOption: 'SpecificVersion'
-              mavenVersion: '3.9.4'
-              mavenPomFile: 'pom.xml'
-              mavenOptions: '-Xmx3072m'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: '17'
-              jdkArchitectureOption: 'x64'
-              publishJUnitResults: true
-              testResultsFiles: '**/surefire-reports/TEST-*.xml'
-              goals: 'test'
-
-          # Download and extract Allure CLI
-          - powershell: |
-              Invoke-WebRequest -Uri https://github.com/allure-framework/allure2/releases/download/2.20.0/allure-2.20.0.zip -OutFile $(Build.SourcesDirectory)\allure.zip
-              Expand-Archive -Path $(Build.SourcesDirectory)\allure.zip -DestinationPath $(Build.SourcesDirectory)\allure
-            displayName: 'Download and Extract Allure CLI'
-
-          # Generate Allure report
-          - powershell: |
-              $(Build.SourcesDirectory)\allure\allure-2.20.0\bin\allure serve $(Build.SourcesDirectory)\target\allure-results -o $(Build.SourcesDirectory)\allure-results
-            displayName: 'Generate Allure Report'
-
-          # Publish Allure report as a build artifact
-          - task: PublishBuildArtifacts@1
-            inputs:
-              pathToPublish: '$(Build.SourcesDirectory)\allure-results'
-              artifactName: 'allure-results'
 
   - stage: NotifySuccess
     condition: succeeded()
